@@ -13,5 +13,6 @@ import io.lettuce.core.ScriptOutputType;
 public class demo_test {
     public static void main(String[] args) {
         System.out.println("nihao");
+        System.out.println("nifdsa");
     }
 }
