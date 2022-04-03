@@ -18,5 +18,7 @@ public class demo_test {
         System.out.println("master test");
         System.out.println("second test");
         System.out.println("first push");
+        System.out.println("pull first");
+        
     }
 }
