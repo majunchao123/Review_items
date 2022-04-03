@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjpowernode.mapper.StudentMapper">
+    <!--代码片段sql
+     <sql id ="自定义唯一值">
+     <include refid="自定义唯一值">
+       -->
+
+    <sql id="selectStu" >
+select  *
+        from t_student
+    </sql>
+
+    <select id="getAll" resultType="com.bjpowernode.domain.Student">
+       <include refid="selectStu"></include>
+    </select>
+
+    <select id="getStudentById" resultType="student">
+        select *
+        from t_student
+        where id = ${id}
+    </select>
+
+
+    <!-- 多个参数：
+
+         属性 = #{自定义param}-->
+    <select id="selectMultiParam" resultType="com.bjpowernode.domain.Student">
+
+        select *
+        from t_student
+        where name = #{myName} or age = #{myAge}
+    </select>
+
+    <!--
+        多个参数，使用Java对象的属性值作为参数实际值
+        使用对象语法：#{属性名,javaType=类型名称,jdbcType=数据类型}很少用
+        javaType：指java数据类型
+        jdbcType：指数据库中的类型
+
+        name = #{属性名}
+    -->
+    <select id="selectMultiParamByQueryParam" resultType="com.bjpowernode.domain.Student">
+        select *
+        from t_student
+        where name = #{paramName}or age = #{paramAge}
+    </select>
+
+    <!--
+        多个参数 , 使用Map ,使用语法#{map的key}
+    -->
+    <select id="selectMultiParamByMap" resultType="com.bjpowernode.domain.Student">
+            select *
+        from t_student
+        where name = #{myName}or age = #{myAge}
+    </select>
+
+
+    <!--定义resultMap
+        id:自定义名称，表示你定义的这个resultmap
+        type：java类型的全限定名称
+    -->
+    <resultMap id="studentMap" type="com.bjpowernode.domain.Student">
+        <!--主键列使用id标签
+            column：表示数据库的列表
+            property：表示java对应的对象的属性名
+        -->
+
+        <id column="id" property="id"></id>
+        <!--
+        非主键列使用result标签
+        -->
+        <result column="name" property="name"></result>
+        <result column="email" property="email"></result>
+        <result column="age" property="age"></result>
+    </resultMap>
+
+
+    <select id="selectAllStudentByResultMap" resultMap="studentMap">
+        select id,name, email,age
+        from t_student
+    </select>
+
+
+    <resultMap id="myStudent" type="com.bjpowernode.domain.MyStudent">
+
+        <id column="id" property="myid"></id>
+        <result column="name" property="myname"></result>
+        <result column="email" property="myemail"></result>
+        <result column="age" property="myage"></result>
+
+    </resultMap>
+
+
+
+    <select id="selectAllStudentByResultMap2" resultMap="myStudent">
+        select id,name, email,age
+        from t_student
+    </select>
+
+
+
+    <!--列名与属性名不一样：第二种方式
+        resultType的默认原则 同名的列会赋值给同名的属性，所以使用列别名 (java对象的属性名)
+    -->
+    <select id="selectAllStudentByAs" resultType="com.bjpowernode.domain.MyStudent">
+        select id as myid ,name as myname ,email as myemail , age as myage
+        from t_student
+
+    </select>
+
+
+
+    <select id="selectLikeStuOne" resultType="com.bjpowernode.domain.Student">
+        select * from t_student
+        where name like #{name};
+    </select>
+
+
+
+    <select id="selectLikeStuOne2" resultType="com.bjpowernode.domain.Student">
+        select * from t_student
+        where name like  "%"  #{name}  "%";
+    </select>
+
+
+    <!--if
+            <if:test="使用传递的参数作为判断条件，语法，属性=xxx值"
+    -->
+
+    <select id="selectStudentIf" resultType="com.bjpowernode.domain.Student">
+        select * from
+        t_student
+        where
+        <if test="name !=null and name !=''">
+            name = #{name}
+        </if>
+        <if test="age >0">
+           and age = #{age}
+        </if>
+    </select>
+
+
+    <!--where
+    where:<where> <if> <if>...</where>
+    -->
+    <select id="selectStudentWhere" resultType="com.bjpowernode.domain.Student">
+         select * from
+        t_student
+        <where>
+            <if test="name !=null and name !=''">
+                name = #{name}
+            </if>
+            <if test="age >0">
+                and age = #{age}
+            </if>
+        </where>
+
+
+    </select>
+
+
+    <!--foreach标签
+    collection:表示接口中的方法参数,数组array,集合list
+    item:自定义的 表示参数的元素
+    open:循环开始的字符串
+    separator:集合成员之间的分隔符
+    close:循环结束的字符串
+    -->
+
+<!--  第一种  foreach类型-->
+    <select id="selectStudentForeach" resultType="com.bjpowernode.domain.Student">
+        select * from
+        t_student
+        where age in
+        <foreach collection="list" item="list" open="(" separator="," close=")">
+            #{list}
+        </foreach>
+    </select>
+
+<!--    第二种类型-->
+    <select id="selectStudentForeach2" resultType="STUDENT">
+
+         select * from
+        t_student
+        where age in
+        <foreach collection="list" item="stu" open="(" separator="," close=")">
+            #{stu.age}
+        </foreach>
+    </select>
+
+
+    
+    
+    
+</mapper>

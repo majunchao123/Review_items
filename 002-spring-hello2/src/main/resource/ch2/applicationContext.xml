@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--
+            声明student对象
+            注入：就是赋值的意思
+            简单类型：基本数据类型 和 String类型
+            di：给对象赋值
+      1.set设值注入
+            1）简单的set注入 (使用的就是类中的set方法)
+            <bean id = "xxx"  class="xxx">
+                <property name = "属性名字" value = "此属性的值"/>
+                一个property只能给一个属性赋值
+                <property .........
+            </bean>
+            2）引用类型的set注入：spring调用类的set方法
+            <bean id = "xxx" class = "xxx">
+            <property name = "属性名字" ref = "bean的id值"/>
+
+            </bean>
+
+
+       2.构造注入
+       使用<constructor-arg>标签
+               name:构造方法形参名
+               index:表示形参的位置 从左到右 0,1,2,3.....
+               value：简单类型使用
+               ref:引用类型使用
+
+    -->
+
+
+
+
+    <bean id="student01" class="com.mjc.spring.ch2.service.Student">
+
+        <constructor-arg name="name" value="mjc"/>
+        <constructor-arg name="num" value="1"/>
+        <constructor-arg name="school" ref="school01"/>
+
+    </bean>
+
+
+    <bean id="school01" class="com.mjc.spring.ch2.service.School">
+
+        <constructor-arg name="name" value="北京大学"/>
+        <constructor-arg name="address" value="北京海淀区"/>
+
+    </bean>
+
+
+
+
+
+
+
+
+</beans>

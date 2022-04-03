@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <!--扫描组件，让Spring托管-->
+    <context:component-scan base-package="com.bjpowernode.service"/>
+    <!--加载配置-->
+    <!--
+    ignore-unresolvable为true时，配置文件${}找不到对应占位符的值，直接赋值'${}'
+    -->
+    <context:property-placeholder location="classpath:jdbc.properties" ignore-unresolvable="true"/>
+
+
+    <!--配置数据源druid-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <!--driverClassName可以不写，智能匹配-->
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+
+    <!--创建sqlSessionFactory对象-->
+    <!-- 配置 SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--读取mybatis的主配置-->
+        <property name="configLocation" value="classpath:mybatis.xml"/>
+        <!--衔接数据源，目前使用的是数据库连接池-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--批量起别名,放在beans包中【也就是实体】-->
+        <property name="typeAliasesPackage" value="com.bjpowernode.beans"/>
+    </bean>
+
+
+    <!-- 创建dao对象,使用SqlSession的getMapper(StuDao.class)方法
+          MapperScannerConfigurer：内部调用getMapper()为每个接口创建代理类对象
+     -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--注册MyBatis的映射文件-->
+        <!--MapperScannerConfigurer会扫描这个包中所有的接口
+        把每个接口都执行一次getMapper()方法，得到对象，把每个对象都放进容器内
+        -->
+        <property name="basePackage" value="com.bjpowernode.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+
+
+    <!--声明式事务处理：和源代码完全分开-->
+    <!--1.声明事务管理器对象-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+
+    <!--2.声明业务方法他的事务属性(隔离级别，传播行为，超时时间)
+        id:自定义名称
+        transaction-manager:事务管理器对象id
+    -->
+    <tx:advice id="myAdvice" transaction-manager="transactionManager">
+        <!--attributes:配置事务属性-->
+        <tx:attributes>
+            <!--method:给具体方法配置事务属性，可以有多个
+                name:1)  完整的方法名称 不带有包和类
+                     2)  方法可以使用通配符，*代表任意字符
+                propagation:传播行为，枚举值
+                isolation:隔离级别
+                rollback-for:指定的异常类名，全限定类名，发生异常回滚
+            -->
+            <tx:method name="buy" propagation="REQUIRED" isolation="DEFAULT"
+                       rollback-for="java.lang.NullPointerException,com.bjpowernode.execp.NotEnoughException"/>
+
+            <!--使用通配符，指定很多方法-->
+            <tx:method name="add*" propagation="REQUIRES_NEW"></tx:method>
+            <!--指定修改方法-->
+            <tx:method name="modify*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--配置aop-->
+    <aop:config>
+
+        <!--配置切入点表达式:指定哪些包中的类，要使用事务
+            id:切入点表达式名称，唯一值
+            expression:切入点表达式，指定哪些类要使用事务
+        -->
+        <!--所有的service中的包和类-->
+        <aop:pointcut id="servicePt" expression="execution(* *..service..*.*(..))"/>
+
+        <!--配置增强器:关联advice和pointcut-->
+        <aop:advisor advice-ref="myAdvice" pointcut-ref="servicePt"></aop:advisor>
+
+
+    </aop:config>
+
+
+
+
+
+
+
+
+</beans>

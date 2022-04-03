@@ -1,7 +1,5 @@
 package com.mjc;
 
-import io.lettuce.core.ScriptOutputType;
-
 /**
  * ClassName:demo_test
  * Package:com.mjc
