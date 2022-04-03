@@ -15,5 +15,6 @@ public class demo_test {
         System.out.println("nihao");
         System.out.println("nifdsa");
         System.out.println("second-branch");
+        System.out.println("master test");
     }
 }
