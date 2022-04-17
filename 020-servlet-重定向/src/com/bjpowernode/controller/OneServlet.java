@@ -43,6 +43,7 @@ public class OneServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         System.out.println("写作业");
-        response.sendRedirect("two");
+       request.getRequestDispatcher("/two").forward(request,response);
+
     }
 }

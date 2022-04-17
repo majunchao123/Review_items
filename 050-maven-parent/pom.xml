@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.mjc</groupId>
+    <artifactId>050-maven-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>051-maven-web</module>
+        <module>052-maven-java</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <properties>
+        <mysql.version>5.1.47</mysql.version>
+        <servlet.version>4.0.1</servlet.version>
+        <jstl.version>1.2</jstl.version>
+    </properties>
+   <dependencyManagement>
+       <dependencies>
+           <!--servlet-->
+           <dependency>
+               <groupId>javax.servlet</groupId>
+               <artifactId>javax.servlet-api</artifactId>
+               <version>${servlet.version}</version>
+               <scope>provided</scope>
+           </dependency>
+           <!--mysql driver-->
+           <dependency>
+               <groupId>mysql</groupId>
+               <artifactId>mysql-connector-java</artifactId>
+               <version>${mysql.version}</version>
+           </dependency>
+
+           <!--JSTL-->
+           <dependency>
+               <groupId>javax.servlet</groupId>
+               <artifactId>jstl</artifactId>
+               <version>${jstl.version}</version>
+           </dependency>
+       </dependencies>
+   </dependencyManagement>
+
+
+</project>

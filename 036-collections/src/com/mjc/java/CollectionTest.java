@@ -56,6 +56,9 @@ public class CollectionTest {
     }
     @Test
     public void test04(){
+        HashSet<Object> hashSet = new HashSet<>();
+        hashSet.add("as");
+        System.out.println(hashSet);
 
 
     }

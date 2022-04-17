@@ -11,6 +11,7 @@
     <title>$Title$</title>
   </head>
   <body>
-  $END$
+
+  <input type="button" value="点击查看跳转" >
   </body>
 </html>
