@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" th:src="@{/js/jquery-1.11.1-min.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+        $(function () {
+
+            alert("用户的姓名是:"+[[${user.name}]]);
+
+        })
+
+
+    </script>
+
+
+</head>
+<body>
+
+</body>
+</html>

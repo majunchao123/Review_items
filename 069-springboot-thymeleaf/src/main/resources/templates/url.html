@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<script type="text/javascript" th:src="@{/js/jquery-1.11.1-min.js}"></script>
+    <script type="text/javascript">
+        $(function () {
+            alert("xxxx")
+        })
+    </script>
+</head>
+<body>
+
+<a href="url.html">普通超链接</a>
+
+<h2>单参数</h2>
+<a th:href="@{/getUser(id=${id})}">thymeleaf路径表达式单参数</a>
+
+<h2>多参数</h2>
+<a th:href="@{/getUser(id=${id},name=${name},age=${age})}">thymeleaf路径表达式多参数</a>
+
+<h2>restful风格</h2>
+<a th:href="@{'getUser2/'+${id}+'/'+${name}+'/'+${age}}">restful风格</a>
+
+</body>
+</html>

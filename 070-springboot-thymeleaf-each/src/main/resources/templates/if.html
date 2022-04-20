@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>if表达式</h2>
+
+
+<span th:if="${user.name eq 'm'}">
+    你是对的
+</span>
+
+<span th:unless="${user.name == 'm'}">
+    if显示
+</span>
+<span th:unless="${user.name == 'yj'}">
+    unless不成立显示
+</span>
+
+
+<h2>switch</h2>
+<span th:switch="${user.name}">
+    <span th:case="m">
+        switch正确
+    </span>
+    <span th:case="jkfds">
+        switch不显示
+    </span>
+</span>
+
+
+
+
+
+</body>
+</html>

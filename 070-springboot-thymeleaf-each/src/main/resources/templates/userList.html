@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+    <span th:each="user,userStat:${userList}">
+        当前index<span th:text="${userStat.index}"></span>
+    用户id:<span th:text="${user.id}"></span><br>
+    用户name:<span th:text="${user.name}"></span><br>
+    用户age:<span th:text="${user.age}"></span><br>
+
+    <hr>
+
+</span>
+
+
+</body>
+</html>

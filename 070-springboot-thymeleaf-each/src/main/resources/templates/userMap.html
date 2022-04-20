@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Map循环</h2>
+
+
+<span th:each="user:${maps}">
+    map索引<span th:text="${userStat.index}"></span><br>
+    map的key<span th:text="${user.key}"></span><br>
+    map的user属性<span th:text="${user.value.id}"></span><br>
+    map的user属性<span th:text="${user.value.name}"></span><br>
+    map的user属性<span th:text="${user.value.age}"></span><br>
+    <hr>
+</span>
+</body>
+</html>
