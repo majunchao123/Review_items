@@ -63,6 +63,8 @@ public class SecKill_redis {
             jedis.close();
             return false;
         }
+
+
         //添加事务
         Transaction multi = jedis.multi();
         multi.decr(kcKey);
